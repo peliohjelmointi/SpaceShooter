@@ -7,10 +7,14 @@ public class Space : MonoBehaviour
                                         //mutta antaa asettaa arvon editorissa
     Renderer rend;
     float offset;
+    //Rigidbody2D rb;
 
     private void Awake()
     {
         rend = GetComponent<Renderer>(); //haetaan referenssi vain kerran muistiin
+        //rb = GetComponent<Rigidbody2D>();
+        //rb.constraints = RigidbodyConstraints2D.FreezePosition;
+        //rb.freezeRotation = true;
     }
 
     void Update() //kutsutaan joka framella
