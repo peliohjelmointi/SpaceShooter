@@ -3,18 +3,14 @@ using UnityEngine;
 public class Space : MonoBehaviour
 {
     [Range(0.1f, 2.0f)]               //luo sliderin editoriin annetuilla min/max -arvoilla
-    [SerializeField] float scrollSpeed; //SerializeField pitää muuttujan privatena,
+    [SerializeField] float scrollSpeed; //SerializeField pitï¿½ï¿½ muuttujan privatena,
                                         //mutta antaa asettaa arvon editorissa
     Renderer rend;
     float offset;
-    //Rigidbody2D rb;
 
     private void Awake()
     {
-        rend = GetComponent<Renderer>(); //haetaan referenssi vain kerran muistiin
-        //rb = GetComponent<Rigidbody2D>();
-        //rb.constraints = RigidbodyConstraints2D.FreezePosition;
-        //rb.freezeRotation = true;
+        rend = GetComponent<Renderer>(); //haetaan referenssi vain kerran muistiin, ennen pelin 1.framea (Startia)
     }
 
     void Update() //kutsutaan joka framella

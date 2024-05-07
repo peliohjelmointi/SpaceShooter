@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Range(1,20)]
+    [Range(5,15)]
     [SerializeField] float moveSpeed;
 
     void Update()
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
             //Debug.Log("D");
             transform.Translate(Vector2.right * Time.deltaTime * moveSpeed);
         }
-        //rajoitetaan pelaajan liikkuminen x-koordinaatein välille -2 ja 2
+        //rajoitetaan pelaajan liikkuminen x-koordinaatein vï¿½lille -2 ja 2
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, -2, 2),transform.position.y);
     }
     
