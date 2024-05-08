@@ -14,4 +14,20 @@ public class Bullet : MonoBehaviour
         if (transform.position.y >= 6)
             Destroy(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Vaihtoehto: tagien avulla:
+        //if (collision.gameObject.CompareTag("Enemy"))       //suositeltava tapa, jos käyttää tageja
+        //{
+        //    print("osuttiin!");
+        //}
+
+        //Älä käytä, vaikka tämäkin toimii, CompareTag kevyempi
+        //if(collision.gameObject.tag =="Enemy")
+        
+        //tuhotaan jokainen objekti, johon bullet osuu:
+        Destroy(collision.gameObject); //tuhoaa alienin
+        Destroy(gameObject); //tuhoaa bulletin (itsensä)
+    }
 }

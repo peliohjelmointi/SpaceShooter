@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     float spaceMaxX;
     float width;
 
+    int bulletNr=0;
+
     private void Awake()
     {                
         width = GetComponent<Renderer>().bounds.size.x; //pelaajan leveys koordinaatistossa       
@@ -24,6 +26,10 @@ public class Player : MonoBehaviour
     private void Start()
     {
         spaceMaxX = space.GetComponent<Space>().rightX; //avaruuden oikean laidan x-koordinaatti  
+
+        //älä käytä, ellet keksi muuta ratkaisua (koska raskas operaatio)
+        //GameObject a = GameObject.Find("Alien");
+        //print(a.GetComponent<SpriteRenderer>().sprite.name);
     }
 
     void Update()
@@ -44,7 +50,13 @@ public class Player : MonoBehaviour
         {
             //Luodaan uusi bullet (prefabista)
             //mikä synnytetään /mihin positioon /rotaatio (oletuksena Quaternion.identity)
-            Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            
+            //annetaan nimi, jotta siihen tarvittaessa saadaan pääsy nimellä
+            bullet.name = $"Bullet numero {bulletNr}"; //uusi tapa
+            // tai sama:
+            //bullet.name = "Bullet " + bulletNr.ToString(); //vanha tapa            
+            bulletNr += 1; // sama kuin bulletNr++; tai bulletNr = bulletNr + 1;
         }
         //rajoitetaan pelaajan liikkuminen x-koordinaatein avaruuden reunojen mukaan
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, -spaceMaxX+width/2, spaceMaxX-width/2),transform.position.y);
