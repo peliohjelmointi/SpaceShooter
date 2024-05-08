@@ -7,6 +7,25 @@ public class Player : MonoBehaviour
     [Range(5,15)]
     [SerializeField] float moveSpeed;
 
+    public GameObject space; //kun inspectorista raahataan Space-Gameobject, päästään käsiksi Space-gameobjektiin (esim. GetComponent<Renderer>() )
+    [SerializeField] GameObject bulletPrefab;
+
+    Transform bulletSpawnPoint;
+
+    float spaceMaxX;
+    float width;
+
+    private void Awake()
+    {                
+        width = GetComponent<Renderer>().bounds.size.x; //pelaajan leveys koordinaatistossa       
+        bulletSpawnPoint = transform.GetChild(0); //vain 1 child, indeksipaikassa 0
+    }
+
+    private void Start()
+    {
+        spaceMaxX = space.GetComponent<Space>().rightX; //avaruuden oikean laidan x-koordinaatti  
+    }
+
     void Update()
     {
     if (Input.GetKey(KeyCode.A)) //jatkuva "luku"
@@ -20,11 +39,32 @@ public class Player : MonoBehaviour
             //Debug.Log("D");
             transform.Translate(Vector2.right * Time.deltaTime * moveSpeed);
         }
-        //rajoitetaan pelaajan liikkuminen x-koordinaatein v�lille -2 ja 2
-        transform.position = new Vector2(Mathf.Clamp(transform.position.x, -2, 2),transform.position.y);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Luodaan uusi bullet (prefabista)
+            //mikä synnytetään /mihin positioon /rotaatio (oletuksena Quaternion.identity)
+            Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        }
+        //rajoitetaan pelaajan liikkuminen x-koordinaatein avaruuden reunojen mukaan
+        transform.position = new Vector2(Mathf.Clamp(transform.position.x, -spaceMaxX+width/2, spaceMaxX-width/2),transform.position.y);
     }
     
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// print(GetComponent<Renderer>().bounds.size.x);
