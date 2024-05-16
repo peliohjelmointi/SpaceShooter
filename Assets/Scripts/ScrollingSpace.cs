@@ -15,12 +15,10 @@ public class Space : MonoBehaviour
     private void Awake()
     {
         rend = GetComponent<Renderer>(); //haetaan referenssi vain kerran muistiin, ennen pelin 1.framea (Startia)      
-    }
-
-    private void Start()
-    {
         rightX = rend.bounds.max.x; //spacen oikea reuna (2.5f tässä tapauksessa
     }
+
+ 
 
     void Update() //kutsutaan joka framella
     {
