@@ -25,7 +25,7 @@ public class AlienCreator : MonoBehaviour
 
     void Start()
     {
-        CreateAlienFleet();
+        CreateAlienFleet();       
     }
 
     void CreateAlienFleet()
@@ -34,7 +34,12 @@ public class AlienCreator : MonoBehaviour
         //Instantiate(alienPrefab, gameObject.transform); //luo objektin m‰‰ritetyn objektin childiksi
         for (int i = 0; i < alienMaxCount; i++)
         {
-            GameObject go = Instantiate(alienPrefab, new Vector3(firstAlienPosition.x + i * alienWidth, firstAlienPosition.y, 0), Quaternion.identity);
+            GameObject go = Instantiate(
+                alienPrefab, 
+                new Vector3(firstAlienPosition.x + i * alienWidth, firstAlienPosition.y, 0),
+                Quaternion.identity,
+                gameObject.transform);
+
             go.name = "Alien nr." + i.ToString();
             //go.SetActive(false);
             //go.GetComponent<SpriteRenderer>().sprite = ...

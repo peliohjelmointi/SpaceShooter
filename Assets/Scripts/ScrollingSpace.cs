@@ -8,7 +8,6 @@ public class Space : MonoBehaviour
     Renderer rend;
     float offset;
 
-
     //[HideInInspector] //pysyy public-tyyppisenä, muttei näytä inspectorissa
     public float rightX; //arvo on 0, jos tätä ei erikseen aseta
 
@@ -17,9 +16,7 @@ public class Space : MonoBehaviour
         rend = GetComponent<Renderer>(); //haetaan referenssi vain kerran muistiin, ennen pelin 1.framea (Startia)      
         rightX = rend.bounds.max.x; //spacen oikea reuna (2.5f tässä tapauksessa
     }
-
  
-
     void Update() //kutsutaan joka framella
     {
         offset = Time.time * scrollSpeed; //kulunut aika * valittu nopeus

@@ -1,16 +1,24 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Alien : MonoBehaviour
 {
     public Sprite[] sprites;
 
+    public GameObject space;
+
     SpriteRenderer rend;
 
-    int currentSprite = 0;
+    int currentSprite=0;
+
+    float spaceMaxX;
+
+    bool isCoroutineRunning; //oletusarvona false
 
     private void Awake()
     {
-        rend = GetComponent<SpriteRenderer>();
+        rend = GetComponent<SpriteRenderer>();                
         //SetRedColor();
         SetRandomColor();
     }
@@ -23,10 +31,10 @@ public class Alien : MonoBehaviour
     void SetRandomColor()
     {
         Color randomRGBColor = new Color32( //Color32-luokka hyväksyy skaalan 0-255 byte-muodossa
-            (byte)Random.Range(0, 255), //voisi asettaa muuttujaan
-            (byte)Random.Range(0, 255),
-            (byte)Random.Range(0, 255),
-            255);
+            (byte)Random.Range(0, 255), //Red-arvo,(voisi asettaa muuttujaan)
+            (byte)Random.Range(0, 255), //Green-arvo
+            (byte)Random.Range(0, 255), //Blue-arvo
+            255); //alpha-kanava (läpinäkyvyys (0=läpinäkyvä, 1=näkyy) )
         Color randomHSVColor = Random.ColorHSV( //HSV-skaala 0-1
             0f, //min hue value
             1f, //max hue value
@@ -36,13 +44,6 @@ public class Alien : MonoBehaviour
             1f); // max visibility
         
         rend.color = randomRGBColor;         
-    }
-
-
-    void Start()
-    {
-        //Invoke("ChangeSprite", 5f); //5 sekunnin kuluttua kutsuisi kerran ChangeSprite-metodia.   
-        InvokeRepeating("ChangeSprite", 0.5f, 0.5f);
     }
 
     void ChangeSprite()
@@ -57,6 +58,45 @@ public class Alien : MonoBehaviour
         currentSprite = (currentSprite + 1) % sprites.Length; //lähtee alusta viimeisen jälkeen
         rend.sprite = sprites[currentSprite];
     }
+    void Start()
+    {
+        //Invoke("ChangeSprite", 5f); //5 sekunnin kuluttua kutsuisi kerran ChangeSprite-metodia.   
+        InvokeRepeating("ChangeSprite", 0.5f, 0.5f);
+        //Haetaan space-gameobjektin Space-skripistä rightX-arvo
+        spaceMaxX = GameManager.Instance.space.GetComponent<Space>().rightX;
+    }
 
+    private void Update()
+    {
+        transform.Translate(new Vector2(
+            GameManager.Instance.fleetDirection, 0) *
+            GameManager.Instance.fleetSpeed *
+            Time.deltaTime);
+                
+        // Tee if-lauseella tarkistukset, ylittääkö/matchaako alienin maksimi x-arvo
+        // spacen oikeaan reunaan (rightX-arvoon) TAI alittaako/matchaako alienin 
+        // minimi x-arvo rightX:n käänteisseen arvoon (-rightX) 
+        
+        // Mikäli if toteutuu (alus osuu reunaan)
+        // Muuta GameManagerin fleetDirection -muuttujan arvo vastakkaiseksi luvuksi
+        // (kerro se -1:llä)
+
+        if(rend.bounds.max.x >= spaceMaxX || //oikeaan reunaan osutaan
+            rend.bounds.min.x <= -spaceMaxX) //vasempaan reunaan osutaan
+        {
+            if (isCoroutineRunning == false)
+            {
+                StartCoroutine(ChangeDirection());
+            }            
+        }              
+       
+    }
+    IEnumerator ChangeDirection()
+    {
+        isCoroutineRunning = true;
+        GameManager.Instance.fleetDirection *= -1;
+        yield return new WaitForSeconds(1);
+        isCoroutineRunning = false;
+    }
 
 }
