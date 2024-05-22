@@ -95,6 +95,7 @@ public class Alien : MonoBehaviour
     {
         isCoroutineRunning = true;
         GameManager.Instance.fleetDirection *= -1;
+        GameManager.Instance.DropFleet(); //Siirrä DropFleet vaikka tähän tiedostoon
         yield return new WaitForSeconds(1);
         isCoroutineRunning = false;
     }

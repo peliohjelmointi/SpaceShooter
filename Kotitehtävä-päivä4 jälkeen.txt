@@ -1,0 +1,4 @@
+- Alien poistetaan aliens-listasta, kun alien ammutaan
+- Mikäli pelaaja törmää alieniin, scene ladataan alusta
+- Mikäli pelaaja ampuu kaikki alienit, tulee keskelle teksti "LEVEL CLEAR" ja
+  avaruuden vauhti tuplataan. 
