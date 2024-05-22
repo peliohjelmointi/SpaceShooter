@@ -5,28 +5,35 @@ using UnityEngine;
 public class GetAxisExamples : MonoBehaviour
 {
     public float speed;
-    
-    void Start()
-    {
-        
-    }
+    Vector2 movementVector;
+
   
     void Update()
     {
         GetInput();
         
     }
+
+    private void FixedUpdate() //0.02sekunnin välein oletuksena = 50x sekunnissa
+    {
+        
+    }
     void GetInput()
     {
         float xMovement = Input.GetAxisRaw("Horizontal"); //vain 0 tai 1 tai -1
-        float yMovement = Input.GetAxis("Vertical"); //kiihtyy 0:sta ykköseen tai -1 seen
-        transform.Translate(new Vector2(xMovement, yMovement) * speed * Time.deltaTime);
-        Debug.Log(xMovement);
+        float yMovement = Input.GetAxisRaw("Vertical"); //kiihtyy 0:sta ykköseen tai -1 seen
+        movementVector = new Vector2(xMovement, yMovement);
 
-        if (Input.GetKeyDown(KeyCode.X)) //GetKey koko ajan, GetKeyDown painohetkellä vain kerran
+        if(movementVector.magnitude > 1)
         {
-            Debug.Log("X painettiin");
+            //Normalisoidaan, mikäli nopeus viistoon liikuttaessa menee yli 1
+            movementVector.Normalize();
+            movementVector = movementVector.normalized;
         }
+
+       transform.Translate(movementVector * speed * Time.deltaTime);
+       Debug.Log(movementVector);
+        
     }
 }
 
